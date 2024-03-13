@@ -8,8 +8,6 @@ import (
 	"go.uber.org/fx"
 )
 
-type FxSet = fx.Option
-
 func Run(fxSet ...fx.Option) {
 	fx.New(
 		fx.WithLogger(fxs.Logger),
