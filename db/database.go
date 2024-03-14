@@ -1,7 +1,6 @@
 package db
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/cnk3x/webfx/config"
@@ -13,32 +12,36 @@ import (
 )
 
 func GormOpen() (db *gorm.DB, err error) {
-	var (
-		// "file::memory:"
-		defDSN    = fmt.Sprintf("file::%s?_pragma=busy_timeout(3000)&_pragma=journal_mode(WAL)", config.WorkSpace("app.db"))
-		dialector = config.Coalesce(config.Get("database.type").String(), "sqlite")
-		dsn       = config.Coalesce(config.Get("database.dsn").String(), defDSN)
-		debug     = config.Get("database.debug").Bool()
-	)
+	dOpt := DefineConfig(Config{
+		Type:     config.Get("database.type").String(),
+		User:     config.Get("database.user").String(),
+		Password: config.Get("database.password").String(),
+		Host:     config.Get("database.host").String(),
+		Port:     int(config.Get("database.port").Int()),
+		Name:     config.Get("database.name").String(),
+		Path:     config.Get("database.path").String(),
+		Args:     config.Get("database.args").String(),
+		Debug:    config.Get("database.debug").Bool(),
+	})
 
-	dialectorOpen := dialectorMap[dialector]
+	dialectorOpen := dialectorMap[dOpt.Type]
 	if dialectorOpen == nil {
-		log.Warnf("DATABASE    not support, type=%q, dns=%q", dialector, dsn)
+		log.Warnf("DATABASE    not support, type=%q, dns=%q", dOpt.Type, dOpt.DSN())
 		return
 	}
 
-	if db, err = gorm.Open(dialectorOpen(dsn), DefaultConfig); err != nil {
+	if db, err = gorm.Open(dialectorOpen(dOpt.DSN()), DefaultConfig); err != nil {
 		db.Error = err
-		log.Warnf("DATABASE    can not connect, type=%q, dns=%q, err=%v", dialector, dsn, err)
+		log.Warnf("DATABASE    can not connect, type=%q, dns=%q, err=%v", dOpt.Type, dOpt.DSN(), err)
 		return
 	}
 
-	if debug {
+	if dOpt.Debug {
 		db.Logger = logger.New(LoggerWriter(true), logger.Config{SlowThreshold: 200 * time.Millisecond, LogLevel: logger.Info, Colorful: true})
-		log.Debugf("DATABASE    connected, type=%q, dns=%q", dialector, dsn)
+		log.Debugf("DATABASE    connected, type=%q, dns=%q", dOpt.Type, dOpt.DSN())
 	} else {
 		db.Logger = logger.New(LoggerWriter(false), logger.Config{SlowThreshold: 200 * time.Millisecond, LogLevel: logger.Warn, Colorful: true})
-		log.Infof("DATABASE    connected, type=%q", dialector)
+		log.Infof("DATABASE    connected, type=%q", dOpt.Type, dOpt.DSN())
 	}
 
 	return

@@ -21,7 +21,7 @@ var (
 	NewMux    = chi.NewMux
 )
 
-func printRoute(r Routes) {
+func PrintRoute(r Routes) {
 	var printRoute func(r Routes, prefix string)
 
 	printRoute = func(r Routes, prefix string) {

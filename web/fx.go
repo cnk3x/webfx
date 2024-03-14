@@ -58,6 +58,5 @@ func Run(params Params) {
 		Struct(r, s)
 	}
 
-	printRoute(r)
 	Serve(r)
 }

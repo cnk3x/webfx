@@ -61,7 +61,7 @@ func SetWorkSpace(ws string) error {
 
 // Get 获取配置
 func Get(name string, force ...bool) (out Value) {
-	if out = IifF(Coalesce(force...), loadDirect, loadOnce); name != "" {
+	if out = IifF(Select(force...), loadDirect, loadOnce); name != "" {
 		out = out.Get(name)
 	}
 

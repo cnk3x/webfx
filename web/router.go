@@ -22,11 +22,11 @@ func Struct(r Router, s any) {
 				r = r.With(Authenticator)
 			}
 			if simple.Mount {
-				log.Output(0, log.DEBUG, "SIMPLE MOUNT   %-30s", simple.Pattern)
+				log.Output(0, log.DEBUG, "SIMPLE MOUNT   %-35s", simple.Pattern)
 				r.Mount(simple.Pattern, h)
 			} else {
 				method, pattern := ResolvePattern(simple.Pattern)
-				log.Output(0, log.DEBUG, "SIMPLE %-7s %-30s", method, pattern)
+				log.Output(0, log.DEBUG, "SIMPLE %-7s %-35s", method, pattern)
 				r.Handle(method+" "+pattern, h)
 			}
 		} else {
@@ -85,7 +85,7 @@ func Struct(r Router, s any) {
 				method, pattern = ResolvePattern(m.Name)
 			}
 
-			log.Output(0, log.DEBUG, "HANDLE %-7s %-30s => %s.%s", method, mount+pattern, rt.String(), m.Name)
+			log.Output(0, log.DEBUG, "HANDLE %-7s %-35s => %s.%s", method, mount+pattern, rt.String(), m.Name)
 
 			r.Handle(method+" "+mount+pattern, handler)
 		}
@@ -201,38 +201,3 @@ type Simple struct {
 	Mount     bool
 	Protected bool
 }
-
-// func Simple(pattern string, s any, remark ...string) Route {
-// 	return simple{
-// 		src:     s,
-// 		handler: ResolveHandler(s),
-// 		pattern: pattern,
-// 		remark:  lo.If(len(remark) == 0, "").ElseF(func() string { return remark[0] }),
-// 	}
-// }
-
-// func Mount(pattern string, s any, remark ...string) Route {
-// 	return Simple{
-// 		handler: ResolveHandler(s),
-// 		pattern: pattern,
-// 		mount:   true,
-// 	}
-// }
-
-// func Simple[T handleable](pattern string, s T, mount ...bool) Route {
-// 	return simple{
-// 		src:     s,
-// 		handler: ResolveHandler(s),
-// 		pattern: pattern,
-// 		mount:   len(mount) > 0 && mount[0],
-// 	}
-// }
-//
-// type handleable interface {
-// 	~func(http.ResponseWriter, *http.Request) |
-// 		~func() error |
-// 		~func(context.Context) |
-// 		~func(context.Context) error |
-// 		~func(Context) |
-// 		func(context.Context) (any, error)
-// }

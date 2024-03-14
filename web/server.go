@@ -13,7 +13,6 @@ import (
 	"github.com/cnk3x/webfx/utils/strs"
 
 	"github.com/caddyserver/certmagic"
-	"github.com/samber/lo"
 )
 
 func Serve(handler http.Handler) {
@@ -27,8 +26,8 @@ func Serve(handler http.Handler) {
 
 func ServeHTTP(handler http.Handler) {
 	var (
-		port = config.Coalesce(config.Get("web.port").String(), "8080")
-		host = lo.Ternary(config.Get("web.internal").Bool(), "127.0.0.1", "")
+		port = config.Select(config.Get("web.port").String(), "8080")
+		host = config.Iif(config.Get("web.internal").Bool(), "127.0.0.1", "")
 	)
 
 	s := &http.Server{

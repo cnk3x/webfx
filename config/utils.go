@@ -8,14 +8,19 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-// Coalesce returns the first non-zero arguments. Arguments must be comparable.
-func Coalesce[T comparable](values ...T) (out T) {
+// Select returns the first non-zero arguments. Arguments must be comparable.
+func Select[T comparable](values ...T) (out T) {
 	out, _ = lo.Coalesce(values...)
 	return
 }
 
 // IifF is a 1 line if/else statement whose options are functions
-func IifF[T any](condition bool, ifFunc func() T, elseFunc func() T) T {
+func Iif[T any](condition bool, ifFunc, elseFunc T) T {
+	return lo.Ternary(condition, ifFunc, elseFunc)
+}
+
+// IifF is a 1 line if/else statement whose options are functions
+func IifF[T any](condition bool, ifFunc, elseFunc func() T) T {
 	return lo.TernaryF(condition, ifFunc, elseFunc)
 }
 
