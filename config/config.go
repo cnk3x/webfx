@@ -18,11 +18,12 @@ func init() {
 	workSpace, _ = os.Getwd()
 }
 
-// func IsDebug() bool   { return debug }
-// func SetDebug(d bool) { debug = d }
-
 func Display() {
-	fmt.Printf("WorkSpace:   %s\n", WorkSpace())
+	fmt.Printf("WorkSpace: %s\n", WorkSpace())
+	fmt.Printf("Version:   %s\n", Version)
+	fmt.Printf("BuildTag:  %s\n", BuildTag)
+	fmt.Printf("BuildHash: %s\n", BuildHash)
+	fmt.Printf("BuildTime: %s\n", BuildTime)
 	fmt.Println("--------------------------")
 }
 
