@@ -41,7 +41,7 @@ func GormOpen() (db *gorm.DB, err error) {
 		log.Debugf("DATABASE    connected, type=%q, dns=%q", dOpt.Type, dOpt.DSN())
 	} else {
 		db.Logger = logger.New(LoggerWriter(false), logger.Config{SlowThreshold: 200 * time.Millisecond, LogLevel: logger.Warn, Colorful: true})
-		log.Infof("DATABASE    connected, type=%q", dOpt.Type, dOpt.DSN())
+		log.Infof("DATABASE    connected, type=%q", dOpt.Type)
 	}
 
 	return
