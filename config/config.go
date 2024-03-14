@@ -19,10 +19,10 @@ func init() {
 }
 
 func Display() {
-	fmt.Printf("WorkSpace: %s\n", WorkSpace())
 	fmt.Printf("Version:   %s\n", Version)
 	fmt.Printf("BuildHash: %s\n", BuildHash)
 	fmt.Printf("BuildTime: %s\n", BuildTime)
+	fmt.Printf("WorkSpace: %s\n", WorkSpace())
 	fmt.Println("--------------------------")
 }
 
