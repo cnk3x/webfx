@@ -5,5 +5,4 @@ var (
 	Version     = "<unknown>"
 	BuildTime   = "<unknown>"
 	BuildHash   = "<unknown>"
-	BuildTag    = "<unknown>"
 )
